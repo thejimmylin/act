@@ -1,15 +1,12 @@
 {
   "scripts": {
-    "dev": "parcel src/index.html",
+    "dev": "parcel src/index.html --no-cache --cache-dir .act/cache --dist-dir .act/dist",
     "build": "parcel build src/index.html"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "parcel": "^2.4.0",
     "@babel/core": "^7.17.8",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-transform-react-jsx": "^7.17.3",
-    "@babel/preset-react": "^7.16.7",
-    "parcel": "^2.4.0"
+    "@babel/plugin-transform-react-jsx": "^7.17.3"
   }
 }
