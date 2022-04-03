@@ -1,2 +1,5 @@
-/.act
+# IDE
+/.vscode
+# Node
 /node_modules
+/.act
