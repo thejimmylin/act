@@ -1,5 +1,9 @@
-# IDE
-/.vscode
+# Mac
+.DS_Store
+
+# VS Code
+.vscode
+
 # Node
-/node_modules
-/.act
+node_modules
+dist
