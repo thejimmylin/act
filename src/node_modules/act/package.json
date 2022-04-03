@@ -1,5 +1,5 @@
 {
   "name": "act",
   "type": "module",
-  "exports": "./index.js"
+  "exports": "./index.ts"
 }

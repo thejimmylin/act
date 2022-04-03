@@ -2,7 +2,7 @@ import { useState } from "act";
 import Foo from "./Foo";
 import Bar from "./Bar";
 
-export default App = () => {
+const App = () => {
   const [count, setCount] = useState(0);
   console.log("App is rendering");
   return (
@@ -16,3 +16,5 @@ export default App = () => {
     </>
   );
 };
+
+export default App;

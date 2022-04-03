@@ -1,6 +1,6 @@
 import { useState } from "act";
 
-export default Bar = () => {
+const Bar = () => {
   const [count, setCount] = useState(0);
   console.log("Bar is rendering");
   return (
@@ -12,3 +12,5 @@ export default Bar = () => {
     </>
   );
 };
+
+export default Bar;

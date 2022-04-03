@@ -1,12 +1,9 @@
 {
   "scripts": {
-    "dev": "parcel src/index.html --no-cache --cache-dir .act/cache --dist-dir .act/dist",
-    "build": "parcel build src/index.html"
+    "dev": "vite"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "parcel": "^2.4.0",
-    "@babel/core": "^7.17.8",
-    "@babel/plugin-transform-react-jsx": "^7.17.3"
-  }
+  "dependencies": {
+    "vite": "^2.9.1"
+  },
+  "devDependencies": {}
 }
