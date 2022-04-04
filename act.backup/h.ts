@@ -1,4 +1,4 @@
-import { isStr, isArr, arrayfy } from './utils'
+import { isStr, arrayfy } from './reconcile'
 import { FreElement } from './type'
 
 // for jsx2
@@ -46,3 +46,5 @@ export function memo(fn){
   fn.memo = true
   return fn
 }
+
+export const isArr = Array.isArray

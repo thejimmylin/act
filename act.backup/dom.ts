@@ -1,5 +1,5 @@
 import { Attributes, DOM, IFiber } from './type'
-import { isStr, LANE } from './utils'
+import { isStr, LANE } from './reconcile'
 
 const defaultObj = {} as const
 
