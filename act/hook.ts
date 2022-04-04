@@ -1,4 +1,5 @@
-import { update, isFn, getCurrentFiber } from "./reconcile"
+import { isFn } from './utils'
+import { update, getCurrentFiber } from "./reconcile"
 import {
   DependencyList,
   Reducer,
