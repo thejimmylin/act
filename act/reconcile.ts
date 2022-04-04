@@ -9,7 +9,7 @@ import {
   IEffect,
 } from './type'
 import { createElement } from './dom'
-import { resetCursor } from './hook'
+import { resetCursor } from './cursor'
 import { schedule, shouldYield } from './schedule'
 import { createText } from './h'
 import { commit } from './commit'

@@ -1,5 +1,6 @@
 import { isFn } from './utils'
 import { update, getCurrentFiber } from "./reconcile"
+import { getAndIncrementCursor } from "./cursor"
 import {
   DependencyList,
   Reducer,
@@ -11,11 +12,6 @@ import {
   RefObject,
   IEffect,
 } from "./type"
-let cursor = 0
-
-export const resetCursor = () => {
-  cursor = 0
-}
 
 export const useState = <T>(initState: T): [T, Dispatch<SetStateAction<T>>] => {
   return useReducer(null, initState)
@@ -25,7 +21,7 @@ export const useReducer = <S, A>(
   reducer?: Reducer<S, A>,
   initState?: S
 ): [S, Dispatch<A>] => {
-  const [hook, current]: [any, IFiber] = getHook<S>(cursor++)
+  const [hook, current]: [any, IFiber] = getHook<S>(getAndIncrementCursor())
   if (hook.length === 0) {
     hook[0] = initState
     hook[1] = (value: A | Dispatch<A>) => {
@@ -53,7 +49,7 @@ const effectImpl = (
   deps: DependencyList,
   key: HookTypes
 ): void => {
-  const [hook, current] = getHook(cursor++)
+  const [hook, current] = getHook(getAndIncrementCursor())
   if (isChanged(hook[1], deps)) {
     hook[0] = cb
     hook[1] = deps
@@ -65,7 +61,7 @@ export const useMemo = <S = Function>(
   cb: () => S,
   deps?: DependencyList
 ): S => {
-  const hook = getHook<S>(cursor++)[0]
+  const hook = getHook<S>(getAndIncrementCursor())[0]
   if (isChanged(hook[1], deps!)) {
     hook[1] = deps
     return (hook[0] = cb())
