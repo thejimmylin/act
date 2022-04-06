@@ -6,7 +6,7 @@ export {
   useEffect,
   useMemo,
   useCallback,
-  useRef,  
+  useRef,
   useLayout,
   useLayout as useLayoutEffect,
 } from "./hook";

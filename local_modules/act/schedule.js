@@ -54,8 +54,4 @@ const getTime = () => performance.now();
 
 const peek = (queue) => queue[0];
 
-export {
-  schedule,
-  startTransition,
-  shouldYield,
-}
+export { schedule, startTransition, shouldYield };
