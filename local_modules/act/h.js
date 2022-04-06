@@ -1,6 +1,6 @@
 import { isStringLike, isArray, asArray } from "./utils";
 
-const h = (type, props, ...kids) => {
+const createElement = (type, props, ...kids) => {
   props = props || {};
   kids = flat(asArray(props.children || kids));
   if (kids.length) props.children = kids.length === 1 ? kids[0] : kids;
@@ -38,4 +38,4 @@ const Fragment = (props) => {
   return props.children;
 };
 
-export { createText, h, Fragment };
+export { createText, createElement, Fragment };
