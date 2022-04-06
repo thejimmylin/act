@@ -1,5 +1,7 @@
 import { isStringLike, isArray, asArray } from "./utils";
 
+const NODE_VALUE_ATTRNAME = "nodeValue";
+
 const createElement = (type, props, ...kids) => {
   props = props || {};
   kids = flat(asArray(props.children || kids));
@@ -31,7 +33,7 @@ const createVnode = (type, props, key, ref) => ({
 
 const createText = (vnode) => ({
   type: "#text",
-  props: { nodeValue: vnode + "" },
+  props: { [NODE_VALUE_ATTRNAME]: vnode + "" },
 });
 
 const Fragment = (props) => {
