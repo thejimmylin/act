@@ -34,15 +34,20 @@ const updateElement = (dom, aProps, bProps) => {
   });
 };
 
+const initElement = (fiber) => {
+  if (fiber.type === "#text") {
+    return document.createTextNode("");
+  } else if (fiber.lane & LANE.SVG) {
+    return document.createElementNS("http://www.w3.org/2000/svg", fiber.type);
+  } else {
+    return document.createElement(fiber.type);
+  }
+};
+
 const createElement = (fiber) => {
-  const dom =
-    fiber.type === "#text"
-      ? document.createTextNode("")
-      : fiber.lane & LANE.SVG
-      ? document.createElementNS("http://www.w3.org/2000/svg", fiber.type)
-      : document.createElement(fiber.type);
-  updateElement(dom, {}, fiber.props);
-  return dom;
+  const element = initElement(fiber);
+  updateElement(element, {}, fiber.props);
+  return element;
 };
 
 export { updateElement, createElement };
