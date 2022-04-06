@@ -38,9 +38,4 @@ const Fragment = (props) => {
   return props.children;
 };
 
-const memo = (fn) => {
-  fn.memo = true;
-  return fn;
-};
-
-export { createText, h, Fragment, memo };
+export { createText, h, Fragment };
