@@ -1,11 +1,11 @@
 const LANE = {
-  UPDATE: 1 << 1,
-  INSERT: 1 << 2,
-  REMOVE: 1 << 3,
-  SVG: 1 << 4,
-  DIRTY: 1 << 5,
-  HEAD: 1 << 6,
-  NOWORK: 1 << 7,
+  UPDATE: 2 ** 0,
+  INSERT: 2 ** 1,
+  REMOVE: 2 ** 2,
+  SVG: 2 ** 3,
+  DIRTY: 2 ** 4,
+  HEAD: 2 ** 5,
+  NOWORK: 2 ** 6,
 };
 
 const isArray = Array.isArray;
