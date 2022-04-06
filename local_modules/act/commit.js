@@ -15,7 +15,7 @@ const insert = (fiber) => {
     return;
   }
   if (fiber.lane & LANE.UPDATE) {
-    updateElement(fiber.node, fiber.oldProps || {}, fiber.props);
+    updateElement(fiber.node, fiber.oldProps, fiber.props);
   }
   if (fiber.lane & LANE.INSERT) {
     fiber.parentNode.insertBefore(fiber.node, fiber.after);

@@ -9,6 +9,15 @@ export const Bar = () => {
       <button onClick={() => setCount((v) => v + 1)}>
         Bar count: {String(count)}
       </button>
+      <div>
+        {[...Array(count)].map((_) =>
+          count % 2 === 0 ? (
+            <p style={{ backgroundColor: "red" }}>hello</p>
+          ) : (
+            <p bar="baz">hello</p>
+          )
+        )}
+      </div>
     </>
   );
 };

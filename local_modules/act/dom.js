@@ -1,37 +1,35 @@
 import { isStringLike, LANE } from "./utils";
 
-const defaultObj = {};
-
-const jointIter = (aProps, bProps, callback) => {
-  aProps = aProps || defaultObj;
-  bProps = bProps || defaultObj;
-  Object.keys(aProps).forEach((k) => callback(k, aProps[k], bProps[k]));
-  Object.keys(bProps).forEach(
-    (k) => !aProps.hasOwnProperty(k) && callback(k, undefined, bProps[k])
-  );
-};
-
-const updateElement = (dom, aProps, bProps) => {
-  jointIter(aProps, bProps, (name, a, b) => {
-    if (a === b || name === "children") {
-    } else if (name === "style" && !isStringLike(b)) {
-      jointIter(a, b, (styleKey, aStyle, bStyle) => {
-        if (aStyle !== bStyle) {
-          dom[name][styleKey] = bStyle || "";
+const updateElement = (dom, oldProps = {}, newProps = {}) => {
+  const allPropNames = Object.keys({ ...oldProps, ...newProps });
+  for (const propName of allPropNames) {
+    const oldValue = oldProps[propName];
+    const newValue = newProps[propName];
+    if (oldValue === newValue || propName === "children") {
+      continue;
+    } else if (propName === "style" && !isStringLike(newValue)) {
+      const allStyleNames = Object.keys({ ...oldValue, ...newValue });
+      for (const styleName of allStyleNames) {
+        const oldValue = oldProps.style?.[styleName];
+        const newValue = newProps.style?.[styleName];
+        if (newValue !== oldValue) {
+          dom.style[styleName] = newValue || "";
         }
-      });
-    } else if (name[0] === "o" && name[1] === "n") {
-      name = name.slice(2).toLowerCase();
-      if (a) dom.removeEventListener(name, a);
-      dom.addEventListener(name, b);
-    } else if (name in dom && !(dom instanceof SVGElement)) {
-      dom[name] = b || "";
-    } else if (b == null || b === false) {
-      dom.removeAttribute(name);
+      }
+    } else if (propName.startsWith("on")) {
+      const eventName = propName.replace("on", "").toLowerCase();
+      if (oldValue) {
+        dom.removeEventListener(eventName, oldValue);
+      }
+      dom.addEventListener(eventName, newValue);
+    } else if (propName in dom && !(dom instanceof SVGElement)) {
+      dom[propName] = newValue || "";
+    } else if (newValue == null || newValue === false) {
+      dom.removeAttribute(propName);
     } else {
-      dom.setAttribute(name, b);
+      dom.setAttribute(propName, newValue);
     }
-  });
+  }
 };
 
 const initElement = (fiber) => {
