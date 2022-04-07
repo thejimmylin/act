@@ -1,19 +1,21 @@
 // DOM
-const updateDomStyle = (dom, style) => {
+const updateDomStyle = ({ dom, style }) => {
   for (const [key, value] of Object.entries(style)) {
     dom.style[key] = value;
   }
 };
 
-const updateDomAttrs = (dom, attrs) => {
+const updateDomAttrs = ({ dom, attrs }) => {
   for (const [key, value] of Object.entries(attrs)) {
     if (key === "style") {
-      updateDomStyle(dom, value);
+      updateDomStyle({ dom, style: value });
+    } else {
+      dom[key] = value;
     }
   }
 };
 
-const updateDomChildren = (dom, children) => {
+const updateDomChildren = ({ dom, children }) => {
   if (typeof children === "string") {
     dom.innerText = children;
   } else {
@@ -21,33 +23,37 @@ const updateDomChildren = (dom, children) => {
   }
 };
 
+const updateDom = ({ dom, attrs, children }) => {
+  if (attrs) updateDomAttrs({ dom, attrs });
+  if (children) updateDomChildren({ dom, children });
+};
+
 const createDom = ({ tagName, attrs, children }) => {
   const dom = document.createElement(tagName);
-  if (attrs) updateDomAttrs(dom, attrs);
-  if (children) updateDomChildren(dom, children);
+  updateDom({ dom, attrs, children });
   return dom;
 };
 
-// VDOM
-const createVdom = (tag, props, ...children) => {
-  props = props || {};
-  props.children = children.length > 0 ? children : props.children;
-  if (typeof tag === "string") {
-    return { tag, props };
-  } else {
-    const component = tag;
-    return component(props);
+const createVdom = (tagName, attrs, ...children) => {
+  attrs = attrs || {};
+  children = children || [];
+  let returned;
+  if (typeof tagName === "string") {
+    returned = { tagName, attrs, children };
+  } else if (typeof tagName === "function") {
+    returned = tagName(attrs);
   }
+  console.log("createVdom");
+  console.log(returned);
+  return returned;
 };
 
-const render = (vdom, dom) => {
-  dom.replaceChildren(
-    createDom({
-      tagName: "p",
-      attrs: { style: { fontSize: "32px", color: "pink" } },
-      children: "Hello world",
-    })
-  );
+const render = (vdomRoot, domRoot) => {
+  const h1 = createDom({
+    tagName: "h1",
+    attrs: { style: { color: "red", backgroundColor: "blue", height: "12px" } },
+  });
+  domRoot.replaceChildren(...[h1]);
 };
 
 export { createVdom };
