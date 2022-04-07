@@ -8,10 +8,22 @@ const lanes = {
   NOWORK: 1 << 7,
 };
 
-const asArray = (v) => (!v ? [] : Array.isArray(v) ? v : [v]);
+const asArray = (value) => {
+  if (!value) {
+    return [];
+  } else if (Array.isArray(value)) {
+    return value;
+  } else {
+    return [value];
+  }
+};
 
-const isFunction = (v) => typeof v === "function";
+const isFunction = (value) => {
+  return typeof value === "function";
+};
 
-const isStringLike = (v) => typeof v === "string" || typeof v === "number";
+const isStringLike = (value) => {
+  return typeof value === "string" || typeof value === "number";
+};
 
 export { lanes, asArray, isFunction, isStringLike };
