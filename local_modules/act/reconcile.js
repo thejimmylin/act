@@ -1,4 +1,4 @@
-import { LANE, asArray, isFunction, isStringLike } from "./utils";
+import { lanes, asArray, isFunction, isStringLike } from "./utils";
 import { createElement } from "./dom";
 import { resetCursor } from "./cursor";
 import { schedule, shouldYield } from "./schedule";
@@ -18,8 +18,8 @@ const render = (vnode, node) => {
 };
 
 const update = (fiber) => {
-  if (fiber && !(fiber.lane & LANE.DIRTY)) {
-    fiber.lane = LANE.UPDATE | LANE.DIRTY;
+  if (fiber && !(fiber.lane & lanes.DIRTY)) {
+    fiber.lane = lanes.UPDATE | lanes.DIRTY;
     schedule(() => {
       effect = fiber;
       return reconcile(fiber);
@@ -43,9 +43,9 @@ const capture = (WIP) => {
   if (WIP.child) return WIP.child;
   while (WIP) {
     bubble(WIP);
-    if (!finish && WIP.lane & LANE.DIRTY) {
+    if (!finish && WIP.lane & lanes.DIRTY) {
       finish = WIP;
-      WIP.lane &= ~LANE.DIRTY;
+      WIP.lane &= ~lanes.DIRTY;
       return null;
     }
     if (WIP.sibling) return WIP.sibling;
@@ -75,7 +75,7 @@ const updateHook = (WIP) => {
 const updateHost = (WIP) => {
   WIP.parentNode = getParentNode(WIP) || {};
   if (!WIP.node) {
-    if (WIP.type === "svg") WIP.lane |= LANE.SVG;
+    if (WIP.type === "svg") WIP.lane |= lanes.SVG;
     WIP.node = createElement(WIP);
   }
   WIP.childNodes = Array.from(WIP.node.childNodes || []);
@@ -99,52 +99,52 @@ const diffKids = (WIP, children) => {
     bTail = bCh.length - 1;
   while (aHead <= aTail && bHead <= bTail) {
     if (!same(aCh[aHead], bCh[bHead])) break;
-    clone(aCh[aHead++], bCh[bHead++], LANE.UPDATE);
+    clone(aCh[aHead++], bCh[bHead++], lanes.UPDATE);
   }
   while (aHead <= aTail && bHead <= bTail) {
     if (!same(aCh[aTail], bCh[bTail])) break;
-    clone(aCh[aTail--], bCh[bTail--], LANE.UPDATE);
+    clone(aCh[aTail--], bCh[bTail--], lanes.UPDATE);
   }
   // LCS
   const { diff, keymap } = lcs(bCh, aCh, bHead, bTail, aHead, aTail);
   let len = diff.length;
   for (let i = 0, aIndex = aHead, bIndex = bHead, mIndex; i < len; i++) {
     const op = diff[i];
-    if (op === LANE.UPDATE) {
+    if (op === lanes.UPDATE) {
       if (!same(aCh[aIndex], bCh[bIndex])) {
-        bCh[bIndex].lane = LANE.INSERT;
-        aCh[aIndex].lane = LANE.REMOVE;
+        bCh[bIndex].lane = lanes.INSERT;
+        aCh[aIndex].lane = lanes.REMOVE;
         effect.e = aCh[aIndex];
         effect = aCh[aIndex];
       } else {
-        clone(aCh[aIndex], bCh[bIndex], LANE.UPDATE);
+        clone(aCh[aIndex], bCh[bIndex], lanes.UPDATE);
       }
       aIndex++;
       bIndex++;
-    } else if (op === LANE.INSERT) {
+    } else if (op === lanes.INSERT) {
       let c = bCh[bIndex];
       mIndex = c.key != null ? keymap[c.key] : null;
       if (mIndex != null) {
-        clone(aCh[mIndex], c, LANE.INSERT);
+        clone(aCh[mIndex], c, lanes.INSERT);
         c.after = WIP.childNodes[aIndex];
         aCh[mIndex] = undefined;
       } else {
         c.after = WIP.childNodes ? WIP.childNodes[aIndex] : null;
-        c.lane = LANE.INSERT;
+        c.lane = lanes.INSERT;
       }
       bIndex++;
-    } else if (op === LANE.REMOVE) {
+    } else if (op === lanes.REMOVE) {
       aIndex++;
     }
   }
   for (let i = 0, aIndex = aHead; i < len; i++) {
     let op = diff[i];
-    if (op === LANE.UPDATE) {
+    if (op === lanes.UPDATE) {
       aIndex++;
-    } else if (op === LANE.REMOVE) {
+    } else if (op === lanes.REMOVE) {
       let c = aCh[aIndex];
       if (c !== undefined) {
-        c.lane = LANE.REMOVE;
+        c.lane = lanes.REMOVE;
         effect.e = c;
         effect = c;
       }
@@ -153,8 +153,8 @@ const diffKids = (WIP, children) => {
   }
   for (let i = 0, prev = null, len = bCh.length; i < len; i++) {
     const child = bCh[i];
-    if (WIP.lane & LANE.SVG) {
-      child.lane |= LANE.SVG;
+    if (WIP.lane & lanes.SVG) {
+      child.lane |= lanes.SVG;
     }
     child.parent = WIP;
     if (i > 0) {
@@ -240,24 +240,24 @@ const lcs = (
   while (ptr) {
     const { newi, oldi } = ptr;
     while (curNewi > newi) {
-      diff[d--] = LANE.INSERT;
+      diff[d--] = lanes.INSERT;
       curNewi--;
     }
     while (curOldi > oldi) {
-      diff[d--] = LANE.REMOVE;
+      diff[d--] = lanes.REMOVE;
       curOldi--;
     }
-    diff[d--] = LANE.UPDATE;
+    diff[d--] = lanes.UPDATE;
     curNewi--;
     curOldi--;
     ptr = ptr.prev;
   }
   while (curNewi >= bHead) {
-    diff[d--] = LANE.INSERT;
+    diff[d--] = lanes.INSERT;
     curNewi--;
   }
   while (curOldi >= aHead) {
-    diff[d--] = LANE.REMOVE;
+    diff[d--] = lanes.REMOVE;
     curOldi--;
   }
   return {

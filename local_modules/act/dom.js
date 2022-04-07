@@ -1,4 +1,4 @@
-import { isStringLike, LANE } from "./utils";
+import { isStringLike, lanes } from "./utils";
 
 const updateElement = (dom, oldProps = {}, newProps = {}) => {
   const allPropNames = Object.keys({ ...oldProps, ...newProps });
@@ -35,7 +35,7 @@ const updateElement = (dom, oldProps = {}, newProps = {}) => {
 const initElement = (fiber) => {
   if (fiber.type === "#text") {
     return document.createTextNode("");
-  } else if (fiber.lane & LANE.SVG) {
+  } else if (fiber.lane & lanes.SVG) {
     return document.createElementNS("http://www.w3.org/2000/svg", fiber.type);
   } else {
     return document.createElement(fiber.type);

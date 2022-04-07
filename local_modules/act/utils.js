@@ -1,4 +1,4 @@
-const LANE = {
+const lanes = {
   UPDATE: 1 << 1,
   INSERT: 1 << 2,
   REMOVE: 1 << 3,
@@ -16,4 +16,4 @@ const isFunction = (v) => typeof v === "function";
 
 const isStringLike = (v) => typeof v === "string" || typeof v === "number";
 
-export { LANE, isArray, asArray, isFunction, isStringLike };
+export { lanes, isArray, asArray, isFunction, isStringLike };

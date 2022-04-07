@@ -1,5 +1,5 @@
 import { updateElement } from "./dom";
-import { isFunction, LANE } from "./utils";
+import { isFunction, lanes } from "./utils";
 
 const commit = (fiber) => {
   let e = fiber.e;
@@ -10,14 +10,14 @@ const commit = (fiber) => {
 };
 
 const insert = (fiber) => {
-  if (fiber.lane === LANE.REMOVE) {
+  if (fiber.lane === lanes.REMOVE) {
     remove(fiber);
     return;
   }
-  if (fiber.lane & LANE.UPDATE) {
+  if (fiber.lane & lanes.UPDATE) {
     updateElement(fiber.node, fiber.oldProps, fiber.props);
   }
-  if (fiber.lane & LANE.INSERT) {
+  if (fiber.lane & lanes.INSERT) {
     fiber.parentNode.insertBefore(fiber.node, fiber.after);
   }
   refer(fiber.ref, fiber.node);
