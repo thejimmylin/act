@@ -1,8 +1,3 @@
-// VDOM
-const createVdom = (tag, props, ...children) => {
-  console.log(tag, props, children);
-};
-
 // DOM
 const updateDomStyle = (dom, style) => {
   for (const [key, value] of Object.entries(style)) {
@@ -33,19 +28,26 @@ const createDom = ({ tagName, attrs, children }) => {
   return dom;
 };
 
+// VDOM
+const createVdom = (tag, props, ...children) => {
+  props = props || {};
+  props.children = children.length > 0 ? children : props.children;
+  if (typeof tag === "string") {
+    return { tag, props };
+  } else {
+    const component = tag;
+    return component(props);
+  }
+};
+
 const render = (vdom, dom) => {
-  const h1 = createDom({
-    tagName: "h1",
-    children: "Hello world",
-  });
-  const p = createDom({
-    tagName: "p",
-    children: "This is some style",
-    attrs: {
-      style: { fontSize: "32px", color: "white", backgroundColor: "pink" },
-    },
-  });
-  dom.replaceChildren(h1, p);
+  dom.replaceChildren(
+    createDom({
+      tagName: "p",
+      attrs: { style: { fontSize: "32px", color: "pink" } },
+      children: "Hello world",
+    })
+  );
 };
 
 export { createVdom };
