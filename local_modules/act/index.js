@@ -1,17 +1,10 @@
-const createElement = (tag, props, ...kids) => {
-  props = props || {};
-  kids = kids || [];
-  if (kids.length > 0) {
-    props.kids = kids;
-  }
-  return { tag, props };
-};
+const createElement = () => {};
 
-const Fragment = (props) => {
-  return props.kids;
-};
+const Fragment = () => {};
 
-const render = (jsx, dom) => {};
+const render = (vdomRoot, domRoot) => {
+  console.log(domRoot);
+};
 
 export { createElement, Fragment };
 export { render };
