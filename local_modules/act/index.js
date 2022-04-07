@@ -34,7 +34,7 @@ const createDom = ({ tagName, attrs, children }) => {
   return dom;
 };
 
-const createVdom = (tagName, attrs, ...children) => {
+const createElement = (tagName, attrs, ...children) => {
   attrs = attrs || {};
   children = children || [];
   let returned;
@@ -48,13 +48,18 @@ const createVdom = (tagName, attrs, ...children) => {
   return returned;
 };
 
-const render = (vdomRoot, domRoot) => {
-  const h1 = createDom({
-    tagName: "h1",
-    attrs: { style: { color: "red", backgroundColor: "blue", height: "12px" } },
-  });
-  domRoot.replaceChildren(...[h1]);
+const createRoot = (container) => {
+  const vdom = {};
+  const mount = () => {};
+  const unmount = () => {};
+  const root = {
+    container,
+    vdom,
+    mount,
+    unmount,
+  };
+  return root;
 };
 
-export { createVdom };
-export { render };
+export { createElement };
+export { createRoot };
