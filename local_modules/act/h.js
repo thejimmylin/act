@@ -3,7 +3,6 @@ import { isStringLike, asArray } from "./utils";
 const NODE_VALUE_ATTRNAME = "nodeValue";
 
 const createElement = (type, props, ...kids) => {
-  console.log("Creating element..", type);
   props = props || {};
   kids = flat(asArray(props.children || kids));
   if (kids.length) props.children = kids.length === 1 ? kids[0] : kids;
