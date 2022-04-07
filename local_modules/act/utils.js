@@ -8,12 +8,10 @@ const lanes = {
   NOWORK: 1 << 7,
 };
 
-const isArray = Array.isArray;
-
-const asArray = (v) => (!v ? [] : isArray(v) ? v : [v]);
+const asArray = (v) => (!v ? [] : Array.isArray(v) ? v : [v]);
 
 const isFunction = (v) => typeof v === "function";
 
 const isStringLike = (v) => typeof v === "string" || typeof v === "number";
 
-export { lanes, isArray, asArray, isFunction, isStringLike };
+export { lanes, asArray, isFunction, isStringLike };

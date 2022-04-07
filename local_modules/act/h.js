@@ -1,4 +1,4 @@
-import { isStringLike, isArray, asArray } from "./utils";
+import { isStringLike, asArray } from "./utils";
 
 const NODE_VALUE_ATTRNAME = "nodeValue";
 
@@ -17,7 +17,7 @@ const some = (x) => x != null && x !== true && x !== false;
 
 const flat = (arr, target = []) => {
   arr.forEach((v) => {
-    isArray(v)
+    Array.isArray(v)
       ? flat(v, target)
       : some(v) && target.push(isStringLike(v) ? createText(v) : v);
   });
