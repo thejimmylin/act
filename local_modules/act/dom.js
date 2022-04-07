@@ -1,4 +1,5 @@
-import { isStringLike, lanes } from "./utils";
+import { isStringLike } from "./utils";
+import { lanes } from "./lane";
 
 const updateElement = (dom, oldProps = {}, newProps = {}) => {
   const allPropNames = Object.keys({ ...oldProps, ...newProps });

@@ -1,5 +1,6 @@
+import { isFunction } from "./utils";
+import { lanes } from "./lane";
 import { updateElement } from "./dom";
-import { isFunction, lanes } from "./utils";
 
 const commit = (fiber) => {
   let e = fiber.e;

@@ -1,8 +1,9 @@
-import { lanes, asArray, isFunction, isStringLike } from "./utils";
-import { createElement } from "./dom";
+import { asArray, isFunction, isStringLike } from "./utils";
+import { lanes } from "./lane";
 import { resetCursor } from "./cursor";
 import { schedule, shouldYield } from "./schedule";
 import { createText } from "./h";
+import { createElement } from "./dom";
 import { commit } from "./commit";
 
 let currentFiber;

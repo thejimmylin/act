@@ -1,6 +1,6 @@
 import { isFunction } from "./utils";
-import { update, getCurrentFiber } from "./reconcile";
 import { getAndIncrementCursor } from "./cursor";
+import { update, getCurrentFiber } from "./reconcile";
 
 const useState = (initState) => {
   return useReducer(null, initState);
