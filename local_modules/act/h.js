@@ -25,18 +25,17 @@ const flat = (arr, target = []) => {
   return target;
 };
 
-const createVnode = (type, props, key, ref) => ({
-  type,
-  props,
-  key,
-  ref,
-});
+const createVnode = (type, props, key, ref) => {
+  return { type, props, key, ref };
+};
 
 const createText = (vnode) => ({
   type: "#text",
   props: { [NODE_VALUE_ATTRNAME]: vnode + "" },
 });
 
-const Fragment = (props) => props.children;
+const Fragment = (props) => {
+  return props.children;
+};
 
 export { createText, createElement, Fragment };
