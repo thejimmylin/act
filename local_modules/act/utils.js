@@ -8,9 +8,7 @@ const asArray = (value) => {
   }
 };
 
-const isFunction = (value) => {
-  return typeof value === "function";
-};
+const isFunction = (value) => typeof value === "function";
 
 const isStringLike = (value) => {
   return typeof value === "string" || typeof value === "number";

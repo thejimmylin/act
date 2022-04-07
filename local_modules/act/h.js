@@ -36,8 +36,6 @@ const createText = (vnode) => ({
   props: { [NODE_VALUE_ATTRNAME]: vnode + "" },
 });
 
-const Fragment = (props) => {
-  return props.children;
-};
+const Fragment = (props) => props.children;
 
 export { createText, createElement, Fragment };
