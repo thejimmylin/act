@@ -1,23 +1,12 @@
-import { useState } from "act";
-
 export const Bar = () => {
-  const [count, setCount] = useState(0);
   console.log("Bar is rendering");
+  const handleClick = () => {
+    console.log("Bar button is being clicked");
+  };
   return (
     <>
       <h1 style={{ fontSize: "36px" }}>Bar</h1>
-      <button onClick={() => setCount((v) => v + 1)}>
-        Bar count: {String(count)}
-      </button>
-      <div>
-        {[...Array(count)].map((_) =>
-          count % 2 === 0 ? (
-            <p style={{ backgroundColor: "red" }}>hello</p>
-          ) : (
-            <p bar="baz">hello</p>
-          )
-        )}
-      </div>
+      <button onClick={handleClick}>Click me</button>
     </>
   );
 };

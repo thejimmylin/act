@@ -1,14 +1,12 @@
-import { useState } from "act";
-
 export const Foo = () => {
-  const [count, setCount] = useState(0);
   console.log("Foo is rendering");
+  const handleClick = () => {
+    console.log("Bar button is being clicked");
+  };
   return (
     <>
       <h1 style={{ fontSize: "36px" }}>Foo</h1>
-      <button onClick={() => setCount((v) => v + 1)}>
-        Foo count: {String(count)}
-      </button>
+      <button onClick={handleClick}>Click me</button>
     </>
   );
 };
