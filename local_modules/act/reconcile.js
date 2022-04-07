@@ -1,6 +1,5 @@
 import { asArray, isFunction, isStringLike } from "./utils";
 import { lanes } from "./lane";
-import { resetCursor } from "./cursor";
 import { schedule, shouldYield } from "./schedule";
 import { createText } from "./h";
 import { createElement } from "./dom";
@@ -67,7 +66,6 @@ const bubble = (WIP) => {
 };
 
 const updateHook = (WIP) => {
-  resetCursor();
   currentFiber = WIP;
   let children = WIP.type(WIP.props);
   diffKids(WIP, simpleVnode(children));
