@@ -4,13 +4,14 @@ const createElement = (tag, props, ...kids) => {
   if (kids.length > 0) {
     props.kids = kids;
   }
-  console.log({ tag, props });
   return { tag, props };
 };
 
-const Fragment = (props) => props.children;
+const Fragment = (props) => {
+  return props.kids;
+};
 
-const render = (component, dom) => {};
+const render = (jsx, dom) => {};
 
 export { createElement, Fragment };
 export { render };
