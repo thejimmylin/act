@@ -1,8 +1,6 @@
 import { createRoot } from "act";
 
-const container = document.querySelector("#container");
-const root = createRoot(container);
-root.mount(
+const App = () => (
   <div>
     <div>
       <p>Hello world</p>
@@ -11,3 +9,6 @@ root.mount(
     </div>
   </div>
 );
+
+const container = document.querySelector("#container");
+createRoot(container).mount(<App />);
