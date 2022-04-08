@@ -15,11 +15,7 @@ const updateDomAttrs = ({ dom, attrs }) => {
 };
 
 const updateDomChildren = ({ dom, children }) => {
-  if (typeof children === "string") {
-    dom.innerText = children;
-  } else {
-    dom.replaceChildren(children);
-  }
+  dom.replaceChildren(...children);
 };
 
 const updateDom = ({ dom, attrs, children }) => {
@@ -32,3 +28,5 @@ const createDom = ({ tagName, attrs, children }) => {
   updateDom({ dom, attrs, children });
   return dom;
 };
+
+export { createDom };
