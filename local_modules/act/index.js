@@ -1,5 +1,5 @@
 /**
- * Type of a value
+ * Return the type of a value, supporting `"array"`
  */
 const typeOf = (obj) => {
   if (Array.isArray(obj)) return "array";
@@ -7,7 +7,7 @@ const typeOf = (obj) => {
 };
 
 /**
- * JSX => VDOM
+ * Used with things like Babel to turn JSX strings to components
  */
 const createElement = (tag, props, ...children) => {
   props = props || {};
@@ -16,7 +16,7 @@ const createElement = (tag, props, ...children) => {
 };
 
 /**
- * Fragment
+ * The `<></>` component
  */
 const Fragment = (props) => {
   return props.children;
@@ -63,7 +63,7 @@ const createDom = ({ tag, props }) => {
 };
 
 /**
- * Component => VDOM
+ * Given a component, return the VDOM
  */
 const renderComp = (comp) => {
   if (typeOf(comp) === "string") return comp;
@@ -74,7 +74,7 @@ const renderComp = (comp) => {
 };
 
 /**
- * VDOM => DOM
+ * Given a VDOM, return the DOM
  */
 const renderVdom = (vdom) => {
   if (typeOf(vdom) === "string") return vdom;
@@ -84,7 +84,7 @@ const renderVdom = (vdom) => {
 };
 
 /**
- * The render API
+ * The `render` API
  */
 const render = (comp, div) => {
   const vdom = renderComp(comp);
