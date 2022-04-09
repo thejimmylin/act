@@ -1,6 +1,7 @@
 import { createDom } from "./dom";
 
 const createElement = (tag, props, ...children) => {
+  props = props || {};
   return { tag, props, children };
 };
 
