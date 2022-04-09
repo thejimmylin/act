@@ -1,4 +1,4 @@
-import { createRoot } from "act";
+import { render } from "act";
 
 const Foo = () => {
   return <p>Foo</p>;
@@ -19,5 +19,4 @@ const App = () => (
   </div>
 );
 
-const container = document.querySelector("#container");
-createRoot(container).mount(<App />);
+render(<App />, document.querySelector("#container"));
