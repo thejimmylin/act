@@ -1,18 +1,21 @@
 import { render } from "act";
 
 const Foo = () => {
+  console.log("Foo is rendering");
   return (
-    <>
+    [
       <p>Foo</p>
-    </>
+    ]
   );
 };
 
 const Bar = () => {
+  console.log("Bar is rendering");
   return <Baz />;
 };
 
 const Baz = () => {
+  console.log("Baz is rendering");
   return (
     <>
       <p>Baz</p>
@@ -21,7 +24,7 @@ const Baz = () => {
 };
 
 const App = () => {
-  console.log("App");
+  console.log("App is rendering");
   return (
     <>
       <div>

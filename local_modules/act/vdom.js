@@ -8,6 +8,9 @@ const createElement = (tag, props, ...children) => {
 
 const renderComponent = (component) => {
   if (typeof component === "string") return component;
+  if (component.length > 0) {
+    console.log(component);
+  }
   if (typeof component.tag === "function")
     return renderComponent(component.tag(component.props));
   if (component.length > 0) {
