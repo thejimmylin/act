@@ -1,22 +1,43 @@
 import { render } from "act";
 
 const Foo = () => {
-  return <p>Foo</p>;
+  return (
+    <>
+      <p>Foo</p>
+    </>
+  );
 };
 
 const Bar = () => {
-  return <p>Bar</p>;
+  return <Baz />;
 };
 
-const App = () => (
-  <div>
-    <div>
-      <p>Hello world</p>
-      <p>This is <a href="https://zh-hant.reactjs.org/docs/introducing-jsx.html">JSX</a></p>
-      <Foo />
-      <Bar />
-    </div>
-  </div>
-);
+const Baz = () => {
+  return (
+    <>
+      <p>Baz</p>
+    </>
+  );
+};
+
+const App = () => {
+  console.log("App");
+  return (
+    <>
+      <div>
+        <p>Hello world</p>
+        <p>
+          This is{" "}
+          <a href="https://zh-hant.reactjs.org/docs/introducing-jsx.html">
+            JSX
+          </a>
+        </p>
+        <Foo />
+        <Bar />
+      </div>
+      <div>12345</div>
+    </>
+  );
+};
 
 render(<App />, document.querySelector("#container"));

@@ -14,14 +14,15 @@ const updateDomAttrs = ({ dom, attrs }) => {
   }
 };
 
-const updateDom = ({ dom, attrs, children }) => {
+const updateDom = ({ dom, props }) => {
+  const { children, ...attrs } = props;
   if (attrs) updateDomAttrs({ dom, attrs });
   if (children) dom.replaceChildren(...children);
 };
 
-const createDom = ({ tagName, attrs, children }) => {
-  const dom = document.createElement(tagName);
-  updateDom({ dom, attrs, children });
+const createDom = ({ tag, props }) => {
+  const dom = document.createElement(tag);
+  updateDom({ dom, props });
   return dom;
 };
 
