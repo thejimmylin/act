@@ -20,7 +20,7 @@ const renderComponent = (component) => {
   const { tag, props } = component;
   return {
     tag,
-    props: { ...props, children: props.children.map(renderComponent) },
+    props: { ...props, children: props.children.flat(Infinity).map(renderComponent) },
   };
 };
 
