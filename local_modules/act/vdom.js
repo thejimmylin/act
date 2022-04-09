@@ -1,19 +1,19 @@
 import { createDom } from "./dom";
 
-const createElement = (tag, attrs, ...children) => {
-  return { tag, attrs, children };
+const createElement = (tag, props, ...children) => {
+  return { tag, props, children };
 };
 
 const renderVdom = (component) => {
   if (typeof component === "string") return component;
-  const { tag, attrs, children } = component;
-  if (typeof tag === "function") return renderVdom(tag(attrs));
-  return { tag, attrs, children: children.map(renderVdom) };
+  const { tag, props, children } = component;
+  if (typeof tag === "function") return renderVdom(tag(props));
+  return { tag, props, children: children.map(renderVdom) };
 };
 
 const renderDom = (vdom) => {
   if (typeof vdom === "string") return vdom;
-  const { tag: tagName, attrs, children } = vdom;
+  const { tag: tagName, props: attrs, children } = vdom;
   return createDom({ tagName, attrs, children: children.map(renderDom) });
 };
 
