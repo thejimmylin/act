@@ -22,23 +22,25 @@ const Baz = () => {
 const App = () => {
   console.log("App is rendering");
   return (
-    <div>
-      {[
-        <>
-          <h1>12345</h1>
+    <>
+      <div>
+        {[
           <>
-            <p>hello wrold</p>
-          </>
-        </>,
-      ]}
-      <div>{[<p>foo</p>, <p>bar</p>, [<p>baz</p>, [[[<h1>fuzz</h1>]]]]]}</div>
-      <p>Hello world</p>
-      <p>
-        This is <a href="https://jsx.org">JSX</a>
-      </p>
-      <Foo />
-      <Bar />
-    </div>
+            <h1>12345</h1>
+            <>
+              <p>hello wrold</p>
+            </>
+          </>,
+        ]}
+        <div>{[<p>foo</p>, <p>bar</p>, [<p>baz</p>, [[[<h1>fuzz</h1>]]]]]}</div>
+        <p>Hello world</p>
+        <p>
+          This is <a href="https://jsx.org">JSX</a>
+        </p>
+        <Foo />
+        <Bar />
+      </div>
+    </>
   );
 };
 
