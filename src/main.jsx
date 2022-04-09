@@ -12,7 +12,7 @@ const App = () => (
   <div>
     <div>
       <p>Hello world</p>
-      <p>This is JSX</p>
+      <p>This is <a href="https://zh-hant.reactjs.org/docs/introducing-jsx.html">JSX</a></p>
       <Foo />
       <Bar />
     </div>

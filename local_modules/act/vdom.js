@@ -4,22 +4,22 @@ const createElement = (tagName, attrs, ...children) => {
   return { tagName, attrs, children };
 };
 
-const getVdom = (component) => {
+const renderVdom = (component) => {
   if (typeof component === "string") return component;
   const { tagName, attrs, children } = component;
-  if (typeof tagName === "function") return getVdom(tagName(attrs));
-  return { tagName, attrs, children: children.map(getVdom) };
+  if (typeof tagName === "function") return renderVdom(tagName(attrs));
+  return { tagName, attrs, children: children.map(renderVdom) };
 };
 
-const vdomToDom = (vdom) => {
+const renderDom = (vdom) => {
   if (typeof vdom === "string") return vdom;
   const { tagName, attrs, children } = vdom;
-  return createDom({ tagName, attrs, children: children.map(vdomToDom) });
+  return createDom({ tagName, attrs, children: children.map(renderDom) });
 };
 
 const render = (rootComponent, domContainer) => {
-  const vdom = getVdom(rootComponent);
-  const dom = vdomToDom(vdom);
+  const vdom = renderVdom(rootComponent);
+  const dom = renderDom(vdom);
   domContainer.replaceChildren(dom);
 };
 
