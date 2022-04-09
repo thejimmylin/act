@@ -1,2 +1,2 @@
-export { createElement, render } from "./vdom";
-export { Fragment } from "./builtin-components";
+export { createElement, Fragment } from "./jsx";
+export { render } from "./vdom";
