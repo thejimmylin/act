@@ -1,22 +1,22 @@
 /**
- * Return the type of a value, supporting `"array"`
+ * Not like `typeof`, it can return `array` for an array.
  */
-const typeOf = (obj) => {
-  if (Array.isArray(obj)) return "array";
-  return typeof obj;
+const typeOf = (value) => {
+  if (Array.isArray(value)) return "array";
+  return typeof value;
 };
 
 /**
- * Used with things like Babel to turn JSX strings to components
+ * A JSX would be passed to this function.
  */
-const createElement = (tag, props, ...children) => {
+const createVdom = (tag, props, ...children) => {
   props = props || {};
   props.children = children;
   return { tag, props };
 };
 
 /**
- * The `<></>` component
+ * A fragment component (`<>`) would be treated as this component.
  */
 const Fragment = (props) => {
   return props.children;
@@ -24,6 +24,7 @@ const Fragment = (props) => {
 
 /**
  * Update DOM style
+ * DOM.style is not a real object, it's a string.
  */
 const updateDomStyle = ({ dom, style }) => {
   for (const [key, value] of Object.entries(style)) {
@@ -63,7 +64,7 @@ const createDom = ({ tag, props }) => {
 };
 
 /**
- * Given a component, return the VDOM
+ * Given a component, render it to return a virtual DOM
  */
 const renderComp = (comp) => {
   if (typeOf(comp) === "string") return comp;
@@ -74,7 +75,7 @@ const renderComp = (comp) => {
 };
 
 /**
- * Given a VDOM, return the DOM
+ * Given a virtual DOM, render it to return a DOM
  */
 const renderVdom = (vdom) => {
   if (typeOf(vdom) === "string") return vdom;
@@ -84,7 +85,7 @@ const renderVdom = (vdom) => {
 };
 
 /**
- * The `render` API
+ * The `render` API, which is used to render a component to the DOM.
  */
 const render = (comp, div) => {
   const vdom = renderComp(comp);
@@ -93,4 +94,4 @@ const render = (comp, div) => {
   div.replaceChildren(...children);
 };
 
-export { createElement, Fragment, render };
+export { createVdom, Fragment, render };
