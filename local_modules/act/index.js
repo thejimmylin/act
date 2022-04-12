@@ -88,17 +88,15 @@ const renderVdom = (vdom) => {
 };
 
 const app = {
-  isInitialized: false,
-  comp: null,
+  mounted: false,
+  rootComp: null,
   container: null,
   state: {},
 };
 
 const useState = (initialState) => {
-  if (!app.isInitialized) {
-    app.state = initialState;
-  }
-  const state = app.isInitialized ? app.state : initialState;
+  if (!app.mounted) app.state = { ...app.state, ...initialState };
+  const state = app.mounted ? app.state : initialState;
   const setState = (newState) => {
     app.state = { ...app.state, ...newState };
     render();
@@ -107,7 +105,7 @@ const useState = (initialState) => {
 };
 
 const render = () => {
-  const vdom = renderComp(app.comp);
+  const vdom = renderComp(app.rootComp);
   const dom = renderVdom(vdom);
   const children = typeOf(dom) === "array" ? dom : [dom];
   app.container.replaceChildren(...children);
@@ -116,11 +114,11 @@ const render = () => {
 /**
  * The `render` API, which is used to render a component to the DOM.
  */
-const mount = (comp, container) => {
-  app.comp = comp;
+const mount = (rootComp, container) => {
+  app.rootComp = rootComp;
   app.container = container;
   render();
-  app.isInitialized = true;
+  app.mounted = true;
 };
 
 export { createVdom, Fragment, useState, mount };
