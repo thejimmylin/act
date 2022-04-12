@@ -1,4 +1,4 @@
-import { render } from "act";
+import { useState, mount } from "act";
 
 const Foo = () => {
   console.log("Foo is rendering");
@@ -20,7 +20,7 @@ const Baz = () => {
 };
 
 const App = () => {
-  console.log("App is rendering");
+  const [state, setState] = useState({ count: 0 });
   return (
     <>
       <div>
@@ -37,6 +37,14 @@ const App = () => {
         <p>
           This is <a href="https://jsx.org">JSX</a>
         </p>
+        <button
+          onClick={() => {
+            setState({ count: state.count + 1 });
+          }}
+        >
+          Click me
+        </button>
+        <h1>{`The count is ${state.count}`}</h1>
         <Foo />
         <Bar />
       </div>
@@ -44,4 +52,4 @@ const App = () => {
   );
 };
 
-render(<App />, document.querySelector("#container"));
+mount(<App />, document.querySelector("#container"));

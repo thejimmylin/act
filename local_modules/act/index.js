@@ -39,6 +39,9 @@ const updateDomAttrs = ({ dom, attrs }) => {
   for (const [key, value] of Object.entries(attrs)) {
     if (key === "style") {
       updateDomStyle({ dom, style: value });
+    } else if (key.startsWith("on")) {
+      const eventName = key.slice(2).toLowerCase();
+      dom.addEventListener(eventName, value);
     } else {
       dom.setAttribute(key, value);
     }
@@ -84,14 +87,40 @@ const renderVdom = (vdom) => {
   return createDom({ tag, props: { ...props, children: renderVdom(props.children) } });
 };
 
+const app = {
+  isInitialized: false,
+  comp: null,
+  container: null,
+  state: {},
+};
+
+const useState = (initialState) => {
+  if (!app.isInitialized) {
+    app.state = initialState;
+  }
+  const state = app.isInitialized ? app.state : initialState;
+  const setState = (newState) => {
+    app.state = { ...app.state, ...newState };
+    render();
+  };
+  return [state, setState];
+};
+
+const render = () => {
+  const vdom = renderComp(app.comp);
+  const dom = renderVdom(vdom);
+  const children = typeOf(dom) === "array" ? dom : [dom];
+  app.container.replaceChildren(...children);
+};
+
 /**
  * The `render` API, which is used to render a component to the DOM.
  */
-const render = (comp, div) => {
-  const vdom = renderComp(comp);
-  const dom = renderVdom(vdom);
-  const children = typeOf(dom) === "array" ? dom : [dom];
-  div.replaceChildren(...children);
+const mount = (comp, container) => {
+  app.comp = comp;
+  app.container = container;
+  render();
+  app.isInitialized = true;
 };
 
-export { createVdom, Fragment, render };
+export { createVdom, Fragment, useState, mount };
