@@ -84,9 +84,15 @@ const renderVdom = (vdom) => {
   if (typeOf(vdom) === "string") return vdom;
   if (typeOf(vdom) === "array") return vdom.map(renderVdom);
   const { tag, props } = vdom;
-  return createDom({ tag, props: { ...props, children: renderVdom(props.children) } });
+  return createDom({
+    tag,
+    props: { ...props, children: renderVdom(props.children) },
+  });
 };
 
+/**
+ * A global app object.
+ */
 const app = {
   mounted: false,
   rootComp: null,
@@ -94,16 +100,20 @@ const app = {
   state: {},
 };
 
-const useState = (initialState) => {
-  if (!app.mounted) app.state = { ...app.state, ...initialState };
-  const state = app.mounted ? app.state : initialState;
-  const setState = (newState) => {
-    app.state = { ...app.state, ...newState };
-    render();
-  };
-  return [state, setState];
+/**
+ * The main API of the library, used to mount a root component in a DOM.
+ * A root component is a function that returns a virtual DOM.
+ */
+const mount = (rootComp, container) => {
+  app.rootComp = rootComp;
+  app.container = container;
+  render();
+  app.mounted = true;
 };
 
+/**
+ * Render the root component to the container.
+ */
 const render = () => {
   const vdom = renderComp(app.rootComp);
   const dom = renderVdom(vdom);
@@ -112,13 +122,40 @@ const render = () => {
 };
 
 /**
- * The `render` API, which is used to render a component to the DOM.
+ * Get the state of the app.
  */
-const mount = (rootComp, container) => {
-  app.rootComp = rootComp;
-  app.container = container;
+const getState = (initialState) => (app.mounted ? app.state : initialState);
+
+/**
+ * Set the state of the app.
+ */
+const _setState = (newState) => {
+  app.state = { ...app.state, ...newState };
+};
+
+/**
+ * Initialize the state of the app.
+ */
+const initState = (initialState) => {
+  if (!app.mounted) _setState(initialState);
+};
+
+/**
+ * Set the state of the app and re-render.
+ */
+const setState = (newState) => {
+  _setState(newState);
   render();
-  app.mounted = true;
+};
+
+/**
+ * The useState API. It's a hook that returns a pair of state and setState.
+ * Because it may be called when the app is not completely mounted, we need 
+ * to use some tricks to make sure the state is initialized properly.
+ */
+const useState = (initialState) => {
+  initState(initialState);
+  return [getState(initialState), setState];
 };
 
 export { createVdom, Fragment, useState, mount };
