@@ -2,6 +2,10 @@
 
 My tiny React. This is just for fun now.
 
+# Overview
+
+All source codes live in [local_modules/act/index.js](https://github.com/j3ygh/act/tree/main/local_modules/act/index.js) now.
+
 # Installation & Run
 
 ```bash
