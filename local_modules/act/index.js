@@ -9,16 +9,16 @@ const typeOf = (value) => {
 /**
  * A JSX would be passed to this function.
  */
-const createVdom = (tag, props, ...children) => {
+const jsxFactory = (tag, props, ...children) => {
   props = props || {};
   props.children = children;
   return { tag, props };
 };
 
 /**
- * A fragment component (`<>`) would be treated as this component.
+ * A JSX fragment (`</>`) is actully a valid component returning its children.
  */
-const Fragment = (props) => {
+const JsxFragment = (props) => {
   return props.children;
 };
 
@@ -158,4 +158,4 @@ const useState = (initialState) => {
   return [getState(initialState), setState];
 };
 
-export { createVdom, Fragment, useState, mount };
+export { jsxFactory, JsxFragment, useState, mount };
