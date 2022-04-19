@@ -1,5 +1,6 @@
 /**
- * Not like `typeof`, it can return `array` for an array.
+ * An extended `typeof`.
+ * It returns `"array"` for an array instead of `"object"`.
  */
 const typeOf = (value) => {
   if (Array.isArray(value)) return "array";
@@ -7,16 +8,16 @@ const typeOf = (value) => {
 };
 
 /**
- * A JSX would be passed to this function.
+ * All JSX elements would be passed to this function.
+ * `tag` could be a function when it's a component. Otherwise, it's a string.
  */
 const jsxFactory = (tag, props, ...children) => {
-  props = props || {};
-  props.children = children;
+  props = { ...props, children };
   return { tag, props };
 };
 
 /**
- * A JSX fragment (`</>`) is actully a valid component returning its children.
+ * A JSX fragment element (`</>`) is just a normal component.
  */
 const JsxFragment = (props) => {
   return props.children;
@@ -150,7 +151,7 @@ const setState = (newState) => {
 
 /**
  * The useState API. It's a hook that returns a pair of state and setState.
- * Because it may be called when the app is not completely mounted, we need 
+ * Because it may be called when the app is not completely mounted, we need
  * to use some tricks to make sure the state is initialized properly.
  */
 const useState = (initialState) => {
