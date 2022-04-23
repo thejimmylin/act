@@ -14,10 +14,11 @@ const typeOf = (value: unknown) => {
 type Component = (props: Props) => JsxElement | Array<JsxElement>;
 type JsxElement = string | { tag: Tag; props: Props };
 type Tag = string | Component;
-type Props = { children?: Array<JsxElement> };
+type Attrs = {};
+type Props = { children: Array<JsxElement> };
 
-const jsxFactory = (tag: Tag, props: Props, ...children: Array<JsxElement>): JsxElement => {
-  props = { ...props, children };
+const jsxFactory = (tag: Tag, attrs: Attrs, ...children: Array<JsxElement>): JsxElement => {
+  const props: Props = { ...attrs, children };
   return { tag, props };
 };
 
