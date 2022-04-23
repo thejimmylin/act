@@ -14,10 +14,9 @@ const typeOf = (value: unknown) => {
 type Component = (props: Props) => JsxElement | Array<JsxElement>;
 type JsxElement = string | { tag: Tag; props: Props };
 type Tag = string | Component;
-type Attrs = {};
 type Props = { children: Array<JsxElement> };
 
-const jsxFactory = (tag: Tag, attrs: Attrs, ...children: Array<JsxElement>): JsxElement => {
+const jsxFactory = (tag: Tag, attrs: {}, ...children: Array<JsxElement>): JsxElement => {
   const props: Props = { ...attrs, children };
   return { tag, props };
 };
