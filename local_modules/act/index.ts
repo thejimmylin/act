@@ -2,7 +2,7 @@
  * An extended `typeof`.
  * It returns `"array"` for an array instead of `"object"`.
  */
-const typeOf = (value) => {
+const typeOf = (value: unknown) => {
   if (Array.isArray(value)) return "array";
   return typeof value;
 };
@@ -11,7 +11,12 @@ const typeOf = (value) => {
  * All JSX elements would be passed to this function.
  * `tag` could be a function when it's a component. Otherwise, it's a string.
  */
-const jsxFactory = (tag, props, ...children) => {
+type Component = (props: Props) => JsxElement | Array<JsxElement>;
+type JsxElement = string | { tag: Tag; props: Props };
+type Tag = string | Component;
+type Props = { children?: Array<JsxElement> };
+
+const jsxFactory = (tag: Tag, props: Props, ...children: Array<JsxElement>): JsxElement => {
   props = { ...props, children };
   return { tag, props };
 };
@@ -19,7 +24,7 @@ const jsxFactory = (tag, props, ...children) => {
 /**
  * A JSX fragment element (`</>`) is just a normal component.
  */
-const JsxFragment = (props) => {
+const JsxFragment: Component = (props) => {
   return props.children;
 };
 
