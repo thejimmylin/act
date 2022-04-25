@@ -1,15 +1,5 @@
 /**
- * An extended `typeof`.
- * It returns `"array"` for an array instead of `"object"`.
- */
-const typeOf = (value: unknown) => {
-  if (Array.isArray(value)) return "array";
-  return typeof value;
-};
-
-/**
- * All JSX elements would be passed to this function.
- * `tag` could be a function when it's a component. Otherwise, it's a string.
+ * Type alias.
  */
 type Component = (props: Props) => Renderable | Array<Renderable>;
 type Props = { children: Array<Renderable> };
@@ -17,13 +7,26 @@ type Renderable = string | JsxElement;
 type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 
-const createJsxElement = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
+/**
+ * A better `typeof` that knows about arrays and null.
+ */
+const typeOf = (value: unknown): string => {
+  if (value === null) return "null";
+  if (Array.isArray(value)) return "array";
+  return typeof value;
+};
+
+/**
+ * All JSX strings are passed to this function to create JSX elements.
+ */
+const createJsxElement = (tag: Tag, attrs: Object, ...children: Array<Renderable>): JsxElement => {
   const props = { ...attrs, children };
   return { tag, props };
 };
 
 /**
- * A JSX fragment element (`</>`) is just a normal component.
+ * A JSX fragment element (`</>`).
+ * It is just a totally valid component.
  */
 const JsxFragment: Component = (props) => {
   return props.children;
@@ -33,7 +36,7 @@ const JsxFragment: Component = (props) => {
  * Update DOM style
  * DOM.style is not a real object, it's a string.
  */
-const updateDomStyle = ({ dom, style }) => {
+const updateDomStyle = ({ dom, style }: { dom: HTMLElement; style: {} }): void => {
   for (const [key, value] of Object.entries(style)) {
     dom.style[key] = value;
   }
