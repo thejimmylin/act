@@ -11,13 +11,14 @@ const typeOf = (value: unknown) => {
  * All JSX elements would be passed to this function.
  * `tag` could be a function when it's a component. Otherwise, it's a string.
  */
-type Component = (props: Props) => JsxElement | Array<JsxElement>;
-type JsxElement = string | { tag: Tag; props: Props };
+type Component = (props: Props) => Renderable | Array<Renderable>;
+type Props = { children: Array<Renderable> };
+type Renderable = string | JsxElement;
+type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
-type Props = { children: Array<JsxElement> };
 
-const jsxFactory = (tag: Tag, attrs: {}, ...children: Array<JsxElement>): JsxElement => {
-  const props: Props = { ...attrs, children };
+const jsxFactory = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
+  const props = { ...attrs, children };
   return { tag, props };
 };
 
