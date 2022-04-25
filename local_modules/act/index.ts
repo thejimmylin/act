@@ -15,11 +15,10 @@ const typeOf = (value: unknown): string => {
   if (Array.isArray(value)) return "array";
   return typeof value;
 };
-
 /**
  * All JSX strings are passed to this function to create JSX elements.
  */
-const createJsxElement = (tag: Tag, attrs: Object, ...children: Array<Renderable>): JsxElement => {
+const createJsxElement = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
   const props = { ...attrs, children };
   return { tag, props };
 };
@@ -28,15 +27,14 @@ const createJsxElement = (tag: Tag, attrs: Object, ...children: Array<Renderable
  * A JSX fragment element (`</>`).
  * It is just a totally valid component.
  */
-const JsxFragment: Component = (props) => {
+const JsxFragment = (props: Props): Renderable | Array<Renderable> => {
   return props.children;
 };
 
 /**
  * Update DOM style
- * DOM.style is not a real object, it's a string.
  */
-const updateDomStyle = ({ dom, style }: { dom: HTMLElement; style: {} }): void => {
+const updateDomStyle = (dom: any, style: any): void => {
   for (const [key, value] of Object.entries(style)) {
     dom.style[key] = value;
   }
@@ -45,10 +43,10 @@ const updateDomStyle = ({ dom, style }: { dom: HTMLElement; style: {} }): void =
 /**
  * Update DOM attributes
  */
-const updateDomAttrs = ({ dom, attrs }) => {
+const updateDomAttrs = (dom: any, attrs: any): void => {
   for (const [key, value] of Object.entries(attrs)) {
     if (key === "style") {
-      updateDomStyle({ dom, style: value });
+      updateDomStyle(dom, value);
     } else if (key.startsWith("on")) {
       const eventName = key.slice(2).toLowerCase();
       dom.addEventListener(eventName, value);
@@ -61,27 +59,27 @@ const updateDomAttrs = ({ dom, attrs }) => {
 /**
  * Update DOM
  */
-const updateDom = ({ dom, props }) => {
+const updateDom = (dom: any, props: any): void => {
   const { children, ...attrs } = props;
-  if (attrs) updateDomAttrs({ dom, attrs });
+  if (attrs) updateDomAttrs(dom, attrs);
   if (children) dom.replaceChildren(...children);
 };
 
 /**
  * Create DOM
  */
-const createDom = ({ tag, props }) => {
+const createDom = (tag: string, props: any) => {
   const dom = document.createElement(tag);
-  updateDom({ dom, props });
+  updateDom(dom, props);
   return dom;
 };
 
 /**
  * Given a component, render it to return a virtual DOM
  */
-const renderComp = (comp) => {
+const renderComp = (comp: Component | Array<Component>) => {
   if (typeOf(comp) === "string") return comp;
-  if (typeOf(comp) === "array") return comp.map(renderComp).flat();
+  if (Array.isArray(comp)) return comp.map(renderComp).flat();
   const { tag, props } = comp;
   if (typeOf(tag) === "function") return renderComp(tag(props));
   return { tag, props: { ...props, children: renderComp(props.children) } };
@@ -94,10 +92,7 @@ const renderVdom = (vdom) => {
   if (typeOf(vdom) === "string") return vdom;
   if (typeOf(vdom) === "array") return vdom.map(renderVdom);
   const { tag, props } = vdom;
-  return createDom({
-    tag,
-    props: { ...props, children: renderVdom(props.children) },
-  });
+  return createDom(tag, { ...props, children: renderVdom(props.children) });
 };
 
 /**
