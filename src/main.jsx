@@ -44,4 +44,4 @@ const App = () => {
   );
 };
 
-mount(<App />, document.querySelector("#container"));
+mount([<h1>Hello</h1>,<h2>World</h2>, <App/>], document.querySelector("#container"));

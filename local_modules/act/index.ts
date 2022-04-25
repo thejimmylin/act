@@ -8,14 +8,6 @@ type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 
 /**
- * A better `typeof` that knows about arrays and null.
- */
-const typeOf = (value: unknown): string => {
-  if (value === null) return "null";
-  if (Array.isArray(value)) return "array";
-  return typeof value;
-};
-/**
  * All JSX strings are passed to this function to create JSX elements.
  */
 const createJsxElement = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
@@ -77,20 +69,20 @@ const createDom = (tag: string, props: any) => {
 /**
  * Given a component, render it to return a virtual DOM
  */
-const renderComp = (comp: Component | Array<Component>) => {
-  if (typeOf(comp) === "string") return comp;
-  if (Array.isArray(comp)) return comp.map(renderComp).flat();
+const renderJsxElement = (comp: Renderable | Array<Renderable>) => {
+  if (typeof comp === "string") return comp;
+  if (Array.isArray(comp)) return comp.map(renderJsxElement).flat();
   const { tag, props } = comp;
-  if (typeOf(tag) === "function") return renderComp(tag(props));
-  return { tag, props: { ...props, children: renderComp(props.children) } };
+  if (typeof tag === "function") return renderJsxElement(tag(props));
+  return { tag, props: { ...props, children: renderJsxElement(props.children) } };
 };
 
 /**
  * Given a virtual DOM, render it to return a DOM
  */
 const renderVdom = (vdom) => {
-  if (typeOf(vdom) === "string") return vdom;
-  if (typeOf(vdom) === "array") return vdom.map(renderVdom);
+  if (typeof vdom === "string") return vdom;
+  if (Array.isArray(vdom)) return vdom.map(renderVdom);
   const { tag, props } = vdom;
   return createDom(tag, { ...props, children: renderVdom(props.children) });
 };
@@ -120,9 +112,9 @@ const mount = (rootComp, container) => {
  * Render the root component to the container.
  */
 const render = () => {
-  const vdom = renderComp(app.rootComp);
+  const vdom = renderJsxElement(app.rootComp);
   const dom = renderVdom(vdom);
-  const children = typeOf(dom) === "array" ? dom : [dom];
+  const children = Array.isArray(dom) ? dom : [dom];
   app.container.replaceChildren(...children);
 };
 
