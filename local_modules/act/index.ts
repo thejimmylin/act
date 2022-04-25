@@ -1,6 +1,7 @@
 /**
  * Type alias.
  */
+// TODO: Define a better `Renderable` type.
 type Component = (props: Props) => Renderable | Array<Renderable>;
 type Props = { children: Array<Renderable> };
 type Renderable = string | JsxElement;
@@ -66,6 +67,7 @@ const createDom = (tag: string, props: any) => {
   return dom;
 };
 
+// TODO: Rename.
 /**
  * Given a component, render it to return a virtual DOM
  */
@@ -77,6 +79,7 @@ const renderJsxElement = (comp: Renderable | Array<Renderable>) => {
   return { tag, props: { ...props, children: renderJsxElement(props.children) } };
 };
 
+// TODO: Rename.
 /**
  * Given a virtual DOM, render it to return a DOM
  */
