@@ -17,7 +17,7 @@ type Renderable = string | JsxElement;
 type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 
-const jsxFactory = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
+const createJsxElement = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
   const props = { ...attrs, children };
   return { tag, props };
 };
@@ -165,4 +165,4 @@ const useState = (initialState) => {
   return [getState(initialState), setState];
 };
 
-export { jsxFactory, JsxFragment, useState, mount };
+export { createJsxElement, JsxFragment, useState, mount };
