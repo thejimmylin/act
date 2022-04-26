@@ -50,7 +50,7 @@ function updateDomAttrs(dom: any, attrs: any): void {
 }
 
 /**
- * Update DOM
+ * Update DOM.
  */
 function updateDom(dom: any, props: any): void {
   const { children, ...attrs } = props;
@@ -59,9 +59,9 @@ function updateDom(dom: any, props: any): void {
 }
 
 /**
- * Create DOM
+ * Create DOM.
  */
-function createDom(tag: string, props: any) {
+function createDom(tag: string, props: any): any {
   const dom = document.createElement(tag);
   updateDom(dom, props);
   return dom;
@@ -79,7 +79,7 @@ function render(renderable: Some<Renderable>) {
 }
 
 /**
- * A global app object
+ * A global app object.
  */
 const app = {
   mounted: false,
