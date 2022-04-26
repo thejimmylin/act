@@ -102,9 +102,9 @@ const mount = (renderable: Some<Renderable>, container: any): void => {
  * Render the mounted renderable in the DOM container.
  */
 const renderDom = (): void => {
-  const dom = render(app.renderable);
-  const children = Array.isArray(dom) ? dom : [dom];
-  app.container.replaceChildren(...children);
+  const someDom = render(app.renderable);
+  const doms = Array.isArray(someDom) ? someDom : [someDom];
+  app.container.replaceChildren(...doms);
 };
 
 /**
