@@ -1,26 +1,26 @@
 /**
  * Type alias.
  */
-// TODO: Define a better `Renderable` type.
-type Component = (props: Props) => Renderable | Array<Renderable>;
-type Props = { children: Array<Renderable> };
+type Some<T> = T | Array<T>;
+type Component = (props: Props) => Some<Renderable>;
+type Props = { children?: Array<Renderable> };
 type Renderable = string | JsxElement;
 type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 
 /**
- * All JSX strings are passed to this function to create JSX elements.
+ * All JSX expressions will be passed to this function to create JSX elements.
  */
-const createJsxElement = (tag: Tag, attrs: {}, ...children: Array<Renderable>): JsxElement => {
-  const props = { ...attrs, children };
+const createJsxElement = (tag: Tag, props: Props, ...children: Array<Renderable>): JsxElement => {
+  props = { ...props, children };
   return { tag, props };
 };
 
 /**
- * A JSX fragment element (`</>`).
- * It is just a totally valid component.
+ * A JSX fragment element (`<></>`).
+ * It is actually just a totally valid component.
  */
-const JsxFragment = (props: Props): Renderable | Array<Renderable> => {
+const JsxFragment: Component = (props) => {
   return props.children;
 };
 
@@ -67,27 +67,15 @@ const createDom = (tag: string, props: any) => {
   return dom;
 };
 
-// TODO: Rename.
 /**
  * Given a component, render it to return a virtual DOM
  */
-const renderJsxElement = (comp: Renderable | Array<Renderable>) => {
-  if (typeof comp === "string") return comp;
-  if (Array.isArray(comp)) return comp.map(renderJsxElement).flat();
-  const { tag, props } = comp;
-  if (typeof tag === "function") return renderJsxElement(tag(props));
-  return { tag, props: { ...props, children: renderJsxElement(props.children) } };
-};
-
-// TODO: Rename.
-/**
- * Given a virtual DOM, render it to return a DOM
- */
-const renderVdom = (vdom) => {
-  if (typeof vdom === "string") return vdom;
-  if (Array.isArray(vdom)) return vdom.map(renderVdom);
-  const { tag, props } = vdom;
-  return createDom(tag, { ...props, children: renderVdom(props.children) });
+const render = (renderable: Some<Renderable>) => {
+  if (typeof renderable === "string") return renderable;
+  if (Array.isArray(renderable)) return renderable.map(render).flat();
+  const { tag, props } = renderable;
+  if (typeof tag === "function") return render(tag(props));
+  return createDom(tag, { ...props, children: render(props.children) });
 };
 
 /**
@@ -95,28 +83,26 @@ const renderVdom = (vdom) => {
  */
 const app = {
   mounted: false,
-  rootComp: null,
+  renderable: null,
   container: null,
   state: {},
 };
 
 /**
- * The main API of the library, used to mount a root component in a DOM.
- * A root component is a function that returns a virtual DOM.
+ * The main API of the library, usually used to mount a root component in a DOM.
  */
-const mount = (rootComp, container) => {
-  app.rootComp = rootComp;
+const mount = (renderable: Some<Renderable>, container: any): void => {
+  app.renderable = renderable;
   app.container = container;
-  render();
+  renderDom();
   app.mounted = true;
 };
 
 /**
- * Render the root component to the container.
+ * Render the mounted renderable in the DOM container.
  */
-const render = () => {
-  const vdom = renderJsxElement(app.rootComp);
-  const dom = renderVdom(vdom);
+const renderDom = (): void => {
+  const dom = render(app.renderable);
   const children = Array.isArray(dom) ? dom : [dom];
   app.container.replaceChildren(...children);
 };
@@ -124,28 +110,28 @@ const render = () => {
 /**
  * Get the state of the app.
  */
-const getState = (initialState) => (app.mounted ? app.state : initialState);
+const getState = (initialState: any) => (app.mounted ? app.state : initialState);
 
 /**
  * Set the state of the app.
  */
-const _setState = (newState) => {
+const _setState = (newState: any) => {
   app.state = { ...app.state, ...newState };
 };
 
 /**
  * Initialize the state of the app.
  */
-const initState = (initialState) => {
+const initState = (initialState: any) => {
   if (!app.mounted) _setState(initialState);
 };
 
 /**
  * Set the state of the app and re-render.
  */
-const setState = (newState) => {
+const setState = (newState: any) => {
   _setState(newState);
-  render();
+  renderDom();
 };
 
 /**
@@ -153,7 +139,7 @@ const setState = (newState) => {
  * Because it may be called when the app is not completely mounted, we need
  * to use some tricks to make sure the state is initialized properly.
  */
-const useState = (initialState) => {
+const useState = (initialState: any) => {
   initState(initialState);
   return [getState(initialState), setState];
 };
