@@ -54,8 +54,12 @@ function updateDomAttrs(dom: any, attrs: any): void {
  */
 function updateDom(dom: any, props: any): void {
   const { children, ...attrs } = props;
-  if (attrs) updateDomAttrs(dom, attrs);
-  if (children) dom.replaceChildren(...children);
+  if (attrs) {
+    updateDomAttrs(dom, attrs);
+  }
+  if (children) {
+    dom.replaceChildren(...children);
+  }
 }
 
 /**
@@ -71,10 +75,16 @@ function createDom(tag: string, props: any): any {
  * Given a component, render it to return a virtual DOM.
  */
 function render(renderable: Some<Renderable>) {
-  if (typeof renderable === "string") return renderable;
-  if (Array.isArray(renderable)) return renderable.map(render).flat();
+  if (typeof renderable === "string") {
+    return renderable;
+  }
+  if (Array.isArray(renderable)) {
+    return renderable.map(render).flat();
+  }
   const { tag, props } = renderable;
-  if (typeof tag === "function") return render(tag(props));
+  if (typeof tag === "function") {
+    return render(tag(props));
+  }
   return createDom(tag, { ...props, children: render(props.children) });
 }
 
@@ -91,7 +101,7 @@ const app = {
 /**
  * The main API of the library, usually used to mount a root component in a DOM.
  */
-function mount(renderable: Some<Renderable>, container: any): void {
+function mount(renderable: Some<Renderable>, container: HTMLElement): void {
   app.renderable = renderable;
   app.container = container;
   renderDom();
@@ -108,40 +118,18 @@ function renderDom(): void {
 }
 
 /**
- * Get the state of the app.
- */
-function getState(initialState: any) {
-  return app.mounted ? app.state : initialState;
-}
-
-/**
- * Set the state of the app.
- */
-function _setState(newState: any) {
-  app.state = { ...app.state, ...newState };
-}
-
-/**
- * Initialize the state of the app.
- */
-function initState(initialState: any) {
-  if (!app.mounted) _setState(initialState);
-}
-
-/**
- * Set the state of the app and re-render.
- */
-function setState(newState: any) {
-  _setState(newState);
-  renderDom();
-}
-
-/**
  * The useState API.
  */
 function useState(initialState: any) {
-  initState(initialState);
-  return [getState(initialState), setState];
+  if (!app.mounted) {
+    app.state = initialState;
+  }
+  const state = app.mounted ? app.state : initialState;
+  const setState = (newState: any) => {
+    app.state = { ...app.state, ...newState };
+    renderDom();
+  };
+  return [state, setState];
 }
 
 export { createJsxElement, JsxFragment, useState, mount };
