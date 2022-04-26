@@ -7,7 +7,4 @@ export default defineConfig({
     jsxFactory: "createJsxElement",
     jsxFragment: "JsxFragment",
   },
-  compileOptions: {
-    lib: "ES6",
-  },
 });
