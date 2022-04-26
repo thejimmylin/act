@@ -9,6 +9,19 @@ type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 
 /**
+ * Type predicates.
+ */
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+function isArray(value: unknown): value is Array<unknown> {
+  return Array.isArray(value);
+}
+function isFunction(value: unknown): value is Function {
+  return typeof value === "function";
+}
+
+/**
  * A JSX element expression is just a call to this function.
  */
 function createJsxElement(tag: Tag, props: Props, ...children: Array<Renderable>): JsxElement {
@@ -19,7 +32,7 @@ function createJsxElement(tag: Tag, props: Props, ...children: Array<Renderable>
 /**
  * A JSX fragment expression is just a normal component.
  */
-function JsxFragment(props: Props): Some<Renderable> {
+function JsxFragment(props: Props): Array<Renderable> {
   return props.children;
 }
 
@@ -75,14 +88,14 @@ function createDom(tag: string, props: any): any {
  * Given a component, render it to return a virtual DOM.
  */
 function render(renderable: Some<Renderable>) {
-  if (typeof renderable === "string") {
+  if (isString(renderable)) {
     return renderable;
   }
-  if (Array.isArray(renderable)) {
+  if (isArray(renderable)) {
     return renderable.map(render).flat();
   }
   const { tag, props } = renderable;
-  if (typeof tag === "function") {
+  if (isFunction(tag)) {
     return render(tag(props));
   }
   return createDom(tag, { ...props, children: render(props.children) });
@@ -113,7 +126,7 @@ function mount(renderable: Some<Renderable>, container: HTMLElement): void {
  */
 function renderDom(): void {
   const someDom = render(app.renderable);
-  const doms = Array.isArray(someDom) ? someDom : [someDom];
+  const doms = isArray(someDom) ? someDom : [someDom];
   app.container.replaceChildren(...doms);
 }
 
