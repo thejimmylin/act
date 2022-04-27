@@ -15,62 +15,51 @@ npm ci
 npm run dev
 ```
 
-# API & Usage
+# Public APIs
 
 For now, there are only `useState` and `mount`.
 Use them like this:
 
 ```jsx
-import { useState, mount } from "act";
+import { mount, useState } from "act";
 
-const Foo = () => {
-  console.log("Foo is rendering");
-  return [<p>Foo</p>];
+const NestedArrayComp = () => {
+  return ["This ", ["is ", [["a ", [[[" nested array component."]]]]]]];
 };
 
-const Bar = () => {
-  console.log("Bar is rendering");
-  return <Baz />;
+const EmptyStringComp = () => {
+  return "";
 };
 
-const Baz = () => {
-  console.log("Baz is rendering");
+const EmptyFragmentComp = () => {
+  return <></>;
+};
+
+const CountComp = () => {
+  const [state, setState] = useState({ count: 0 });
   return (
-    <>
-      <p>Baz</p>
-    </>
+    <button
+      styles={{ display: "block", marginTop: "10px" }}
+      onClick={() => {
+        setState({ count: state.count + 1 });
+      }}
+    >
+      This is count component. Count: {`${state.count}`}
+    </button>
   );
 };
 
 const App = () => {
-  const [state, setState] = useState({ count: 0 });
   return (
     <>
-      <div>
-        {[
-          <>
-            <h1>12345</h1>
-            <>
-              <p>hello wrold</p>
-            </>
-          </>,
-        ]}
-        <div>{[<p>foo</p>, <p>bar</p>, [<p>baz</p>, [[[<h1>fuzz</h1>]]]]]}</div>
-        <p>Hello world</p>
-        <p>
-          This is <a href="https://jsx.org">JSX</a>
-        </p>
-        <button
-          onClick={() => {
-            setState({ count: state.count + 1 });
-          }}
-        >
-          Click me
-        </button>
-        <h1>{`The count is ${state.count}`}</h1>
-        <Foo />
-        <Bar />
-      </div>
+      <h1>
+        Hello <span styles={{ color: "green" }}>world</span>
+      </h1>
+      <p>This is a p</p>
+      <NestedArrayComp />
+      <EmptyStringComp />
+      <EmptyFragmentComp />
+      <CountComp />
     </>
   );
 };

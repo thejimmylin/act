@@ -1,4 +1,4 @@
-import { useState, mount } from "act";
+import { mount, useState } from "act";
 
 const NestedArrayComp = () => {
   return ["This ", ["is ", [["a ", [[[" nested array component."]]]]]]];
