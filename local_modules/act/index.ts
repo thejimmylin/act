@@ -12,7 +12,7 @@ type Tag = string | Component;
  * A JSX element expression is just a call to this function.
  */
 function createJsxElement(tag: Tag, props: {}, ...children: Array<JsxNode>): JsxElement {
-  return {tag, props: { ...props, children } };
+  return { tag, props: { ...props, children } };
 }
 
 /**
@@ -115,18 +115,22 @@ function renderDom(): void {
 }
 
 /**
- * The useState API.
+ * The `useState` hook.
  */
+function getState() {
+  return app.state;
+}
+
+function setState(newState: any) {
+  app.state = { ...app.state, ...newState };
+  renderDom();
+}
+
 function useState(initialState: any) {
   if (!app.mounted) {
     app.state = initialState;
   }
-  const state = app.mounted ? app.state : initialState;
-  const setState = (newState: any) => {
-    app.state = { ...app.state, ...newState };
-    renderDom();
-  };
-  return [state, setState];
+  return [getState, setState];
 }
 
-export { createJsxElement, JsxFragment, useState, mount };
+export { createJsxElement, JsxFragment, mount, useState };
