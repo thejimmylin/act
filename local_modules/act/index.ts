@@ -1,25 +1,25 @@
 /**
  * Type aliases.
  */
-type Some<T> = T | Array<T>;
+type Component = (props: {}) => Renderable;
+type Renderable = JsxNode | Array<JsxNode>;
 type JsxElement = { tag: Tag; props: Props };
-type Renderable = JsxElement | string;
+type JsxNode = JsxElement | string;
 type Tag = string | Component;
-type Props = { children?: Array<Renderable> };
-type Component = (props: Props) => Some<Renderable>;
+type Props = { children: Array<JsxNode> };
 
 /**
  * A JSX element expression is just a call to this function.
  */
-function createJsxElement(tag: Tag, props: Props, ...children: Array<Renderable>): JsxElement {
-  props = { ...props, children };
-  return { tag, props };
+function createJsxElement(tag: Tag, props: {}, ...children: Array<JsxNode>): JsxElement {
+  const jsxElement = { tag, props: { ...props, children } };
+  return jsxElement;
 }
 
 /**
  * A JSX fragment expression is just a normal component.
  */
-function JsxFragment(props: Props): Array<Renderable> {
+function JsxFragment(props: Props): Renderable {
   return props.children;
 }
 
@@ -74,7 +74,7 @@ function createDom(tag: string, props: any): any {
 /**
  * Given a component, render it to return a virtual DOM.
  */
-function render(renderable: Some<Renderable>) {
+function render(renderable: Renderable) {
   if (Array.isArray(renderable)) {
     return renderable.map(render).flat();
   }
@@ -101,7 +101,7 @@ const app = {
 /**
  * The main API of the library, usually used to mount a root component in a DOM.
  */
-function mount(renderable: Some<Renderable>, container: HTMLElement): void {
+function mount(renderable: Renderable, container: HTMLElement): void {
   app.renderable = renderable;
   app.container = container;
   renderDom();
