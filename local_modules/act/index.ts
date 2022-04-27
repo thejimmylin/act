@@ -77,21 +77,21 @@ const app: any = {
 };
 
 /**
+ * Rerender the mounted renderable in the DOM container.
+ */
+function rerender(): void {
+  const children = [render(app.renderable)].flat();
+  app.container.replaceChildren(...children);
+}
+
+/**
  * The main API of the library, usually used to mount a root component in a DOM.
  */
 function mount(renderable: Renderable, container: HTMLElement): void {
   app.renderable = renderable;
   app.container = container;
-  renderDom();
+  rerender();
   app.mounted = true;
-}
-
-/**
- * Render the mounted renderable in the DOM container.
- */
-function renderDom(): void {
-  const children = [render(app.renderable)].flat();
-  app.container.replaceChildren(...children);
 }
 
 /**
@@ -99,7 +99,7 @@ function renderDom(): void {
  */
 function setState(newState: any) {
   app.state = { ...app.state, ...newState };
-  renderDom();
+  rerender();
 }
 
 /**
