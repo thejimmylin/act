@@ -2,24 +2,11 @@
  * Type aliases.
  */
 type Some<T> = T | Array<T>;
-type Component = (props: Props) => Some<Renderable>;
-type Props = { children?: Array<Renderable> };
-type Renderable = string | JsxElement;
 type JsxElement = { tag: Tag; props: Props };
+type Renderable = JsxElement | string;
 type Tag = string | Component;
-
-/**
- * Type predicates.
- */
-function isString(value: unknown): value is string {
-  return typeof value === "string";
-}
-function isArray(value: unknown): value is Array<unknown> {
-  return Array.isArray(value);
-}
-function isFunction(value: unknown): value is Function {
-  return typeof value === "function";
-}
+type Props = { children?: Array<Renderable> };
+type Component = (props: Props) => Some<Renderable>;
 
 /**
  * A JSX element expression is just a call to this function.
@@ -88,14 +75,14 @@ function createDom(tag: string, props: any): any {
  * Given a component, render it to return a virtual DOM.
  */
 function render(renderable: Some<Renderable>) {
-  if (isString(renderable)) {
-    return renderable;
-  }
-  if (isArray(renderable)) {
+  if (Array.isArray(renderable)) {
     return renderable.map(render).flat();
   }
+  if (typeof renderable === "string") {
+    return renderable;
+  }
   const { tag, props } = renderable;
-  if (isFunction(tag)) {
+  if (typeof tag === "function") {
     return render(tag(props));
   }
   return createDom(tag, { ...props, children: render(props.children) });
@@ -125,9 +112,7 @@ function mount(renderable: Some<Renderable>, container: HTMLElement): void {
  * Render the mounted renderable in the DOM container.
  */
 function renderDom(): void {
-  const someDom = render(app.renderable);
-  const doms = isArray(someDom) ? someDom : [someDom];
-  app.container.replaceChildren(...doms);
+  app.container.replaceChildren(...[render(app.renderable)].flat());
 }
 
 /**
