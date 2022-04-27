@@ -58,7 +58,7 @@ function createDom(tag: string, props: any): any {
 /**
  * Given a component, render it to return a virtual DOM.
  */
-function render(renderable: Renderable) {
+function render(renderable: Renderable): Renderable {
   if (Array.isArray(renderable)) return renderable.map(render).flat();
   if (typeof renderable === "string") return renderable;
   const { tag, props } = renderable;
@@ -69,10 +69,10 @@ function render(renderable: Renderable) {
 /**
  * A global app object.
  */
-const app = {
+const app: any = {
   mounted: false,
-  renderable: null,
-  container: null,
+  renderable: undefined,
+  container: undefined,
   state: {},
 };
 
@@ -90,7 +90,7 @@ function mount(renderable: Renderable, container: HTMLElement): void {
  * Render the mounted renderable in the DOM container.
  */
 function renderDom(): void {
-  const children = render(app.renderable);
+  const children = [render(app.renderable)].flat();
   app.container.replaceChildren(...children);
 }
 
