@@ -23,21 +23,12 @@ function JsxFragment(props: Props): Renderable {
 }
 
 /**
- * Update DOM style.
- */
-function updateDomStyle(dom: any, style: any): void {
-  for (const [key, value] of Object.entries(style)) {
-    dom.style[key] = value;
-  }
-}
-
-/**
  * Update DOM attributes.
  */
 function updateDomAttrs(dom: any, attrs: any): void {
   for (const [key, value] of Object.entries(attrs)) {
-    if (key === "style") {
-      updateDomStyle(dom, value);
+    if (key === "styles") {
+      Object.assign(dom.style, value);
     } else if (key.slice(0, 2) === "on") {
       dom.addEventListener(key.slice(2).toLowerCase(), value);
     } else {
@@ -51,8 +42,8 @@ function updateDomAttrs(dom: any, attrs: any): void {
  */
 function updateDom(dom: any, props: any): void {
   const { children, ...attrs } = props;
-  if (attrs) { updateDomAttrs(dom, attrs); }
-  if (children) { dom.replaceChildren(...children); }
+  if (attrs) updateDomAttrs(dom, attrs);
+  if (children) dom.replaceChildren(...children);
 }
 
 /**
@@ -68,10 +59,10 @@ function createDom(tag: string, props: any): any {
  * Given a component, render it to return a virtual DOM.
  */
 function render(renderable: Renderable) {
-  if (Array.isArray(renderable)) { return renderable.map(render).flat(); }
-  if (typeof renderable === "string") { return renderable; }
+  if (Array.isArray(renderable)) return renderable.map(render).flat();
+  if (typeof renderable === "string") return renderable;
   const { tag, props } = renderable;
-  if (typeof tag === "function") { return render(tag(props)); }
+  if (typeof tag === "function") return render(tag(props));
   return createDom(tag, { ...props, children: render(props.children) });
 }
 
@@ -99,7 +90,8 @@ function mount(renderable: Renderable, container: HTMLElement): void {
  * Render the mounted renderable in the DOM container.
  */
 function renderDom(): void {
-  app.container.replaceChildren(...[render(app.renderable)].flat());
+  const children = render(app.renderable);
+  app.container.replaceChildren(...children);
 }
 
 /**
@@ -114,7 +106,7 @@ function setState(newState: any) {
  * The `useState` hook.
  */
 function useState(initialState: any) {
-  if (!app.mounted) { app.state = initialState; }
+  if (!app.mounted) app.state = initialState;
   return [app.state, setState];
 }
 

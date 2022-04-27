@@ -1,9 +1,5 @@
 import { useState, mount } from "act";
 
-const ArrayComp = () => {
-  return ["This ", "is ", "an ", "array component. "];
-};
-
 const NestedArrayComp = () => {
   return ["This ", ["is ", [["a ", [[[" nested array component."]]]]]]];
 };
@@ -20,7 +16,7 @@ const CountComp = () => {
   const [state, setState] = useState({ count: 0 });
   return (
     <button
-      style={{ display: "block", marginTop: "10px" }}
+      styles={{ display: "block", marginTop: "10px" }}
       onClick={() => {
         setState({ count: state.count + 1 });
       }}
@@ -33,9 +29,10 @@ const CountComp = () => {
 const App = () => {
   return (
     <>
-      <h1>This is a h1</h1>
+      <h1>
+        Hello <span styles={{ color: "green" }}>world</span>
+      </h1>
       <p>This is a p</p>
-      <ArrayComp />
       <NestedArrayComp />
       <EmptyStringComp />
       <EmptyFragmentComp />
@@ -44,4 +41,4 @@ const App = () => {
   );
 };
 
-mount([<h1>Hello</h1>,<h2>World</h2>, <App/>], document.querySelector("#container"));
+mount(<App />, document.querySelector("#container"));
