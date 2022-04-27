@@ -39,9 +39,7 @@ function updateDomAttrs(dom: any, attrs: any): void {
     if (key === "style") {
       updateDomStyle(dom, value);
     } else if (key.slice(0, 2) === "on") {
-      const eventType = key.slice(2).toLowerCase();
-      const listener = value;
-      dom.addEventListener(eventType, listener);
+      dom.addEventListener(key.slice(2).toLowerCase(), value);
     } else {
       dom.setAttribute(key, value);
     }
@@ -53,12 +51,8 @@ function updateDomAttrs(dom: any, attrs: any): void {
  */
 function updateDom(dom: any, props: any): void {
   const { children, ...attrs } = props;
-  if (attrs) {
-    updateDomAttrs(dom, attrs);
-  }
-  if (children) {
-    dom.replaceChildren(...children);
-  }
+  if (attrs) { updateDomAttrs(dom, attrs); }
+  if (children) { dom.replaceChildren(...children); }
 }
 
 /**
@@ -74,16 +68,10 @@ function createDom(tag: string, props: any): any {
  * Given a component, render it to return a virtual DOM.
  */
 function render(renderable: Renderable) {
-  if (Array.isArray(renderable)) {
-    return renderable.map(render).flat();
-  }
-  if (typeof renderable === "string") {
-    return renderable;
-  }
+  if (Array.isArray(renderable)) { return renderable.map(render).flat(); }
+  if (typeof renderable === "string") { return renderable; }
   const { tag, props } = renderable;
-  if (typeof tag === "function") {
-    return render(tag(props));
-  }
+  if (typeof tag === "function") { return render(tag(props)); }
   return createDom(tag, { ...props, children: render(props.children) });
 }
 
@@ -115,22 +103,19 @@ function renderDom(): void {
 }
 
 /**
- * The `useState` hook.
+ * The `setState` function.
  */
-function getState() {
-  return app.state;
-}
-
 function setState(newState: any) {
   app.state = { ...app.state, ...newState };
   renderDom();
 }
 
+/**
+ * The `useState` hook.
+ */
 function useState(initialState: any) {
-  if (!app.mounted) {
-    app.state = initialState;
-  }
-  return [getState, setState];
+  if (!app.mounted) { app.state = initialState; }
+  return [app.state, setState];
 }
 
 export { createJsxElement, JsxFragment, mount, useState };

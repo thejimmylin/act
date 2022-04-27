@@ -18,15 +18,14 @@ const EmptyFragmentComp = () => {
 
 const CountComp = () => {
   const [state, setState] = useState({ count: 0 });
-  console.log(state())
   return (
     <button
       style={{ display: "block", marginTop: "10px" }}
       onClick={() => {
-        setState({ count: state().count + 1 });
+        setState({ count: state.count + 1 });
       }}
     >
-      This is count component. Count: {`${state().count}`}
+      This is count component. Count: {`${state.count}`}
     </button>
   );
 };
