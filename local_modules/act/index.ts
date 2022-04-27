@@ -3,8 +3,8 @@
  */
 type Component = (props: {}) => Renderable;
 type Renderable = JsxNode | Array<JsxNode>;
-type JsxElement = { tag: Tag; props: Props };
 type JsxNode = JsxElement | string;
+type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
 type Props = { children: Array<JsxNode> };
 
