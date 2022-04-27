@@ -1,17 +1,17 @@
 /**
  * Type aliases.
  */
-type Component = (props: {}) => Renderable;
+type Component = (props: Props) => Renderable;
+type Props = { children: Array<JsxNode> };
 type Renderable = JsxNode | Array<JsxNode>;
 type JsxNode = JsxElement | string;
 type JsxElement = { tag: Tag; props: Props };
 type Tag = string | Component;
-type Props = { children: Array<JsxNode> };
 
 /**
  * A JSX element expression is just a call to this function.
  */
-function createJsxElement(tag: Tag, props: {}, ...children: Array<JsxNode>): JsxElement {
+function createJsxElement(tag: Tag, props: Props, ...children: Array<JsxNode>): JsxElement {
   const jsxElement = { tag, props: { ...props, children } };
   return jsxElement;
 }
