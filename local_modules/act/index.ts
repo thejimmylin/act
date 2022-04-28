@@ -11,8 +11,9 @@ type Tag = string | Component;
 /**
  * A JSX element expression is just a call to this function.
  */
-function createJsxElement(tag: Tag, props: Partial<Props>, ...children: Array<JsxNode>): JsxElement {
-  return { tag, props: { ...props, children } };
+function createJsxElement(tag: Tag, _props: Partial<Props>, ...children: Array<JsxNode>): JsxElement {
+  const props: Props = { ..._props, children };
+  return { tag, props };
 }
 
 /**
