@@ -1,10 +1,11 @@
 # act
 
 My tiny React.
+This is just for fun now :)
 
 # Overview
 
-All source codes live in [local_modules/act/index.js](https://github.com/j3ygh/act/tree/main/local_modules/act/index.js) now.
+All source codes live in [local_modules/act/index.ts](https://github.com/j3ygh/act/tree/main/local_modules/act/index.ts) now.
 
 # Installation & Run
 
