@@ -1,43 +1,16 @@
 import { mount, useState } from "act";
 
-const NestedArrayComp = () => {
-  return ["This ", ["is ", [["a ", [[[" nested array component."]]]]]]];
-};
-
-const EmptyStringComp = () => {
-  return "";
-};
-
-const EmptyFragmentComp = () => {
-  return <></>;
-};
-
-const CountComp = () => {
+const App = () => {
   const [state, setState] = useState({ count: 0 });
   return (
     <button
-      styles={{ display: "block", marginTop: "10px" }}
+      styles={{ fontFamily: "sans-serif", padding: "1rem" }}
       onClick={() => {
         setState({ count: state.count + 1 });
       }}
     >
-      This is count component. Count: {`${state.count}`}
+      {`You've clicked me ${state.count} times!`}
     </button>
-  );
-};
-
-const App = () => {
-  return (
-    <>
-      <h1>
-        Hello <span styles={{ color: "green" }}>world</span>
-      </h1>
-      <p>This is a p</p>
-      <NestedArrayComp />
-      <EmptyStringComp />
-      <EmptyFragmentComp />
-      <CountComp />
-    </>
   );
 };
 
