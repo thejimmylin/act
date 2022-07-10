@@ -59,7 +59,7 @@ const App = () => {
 };
 ```
 
-How could `foo`, `bar` and `baz` be in a same flat array (`div.children`)? Their shape is more like a `["foo", ["bar", "baz"]]`.
+How could `foo`, `bar` and `baz` be in a same flat array (`div.children`)? Their shape is more like a `["foo", ["bar", "baz"]]`!
 
 Well, this is because React flattens everything internally to avoid nested arrays. In fact, you can write this in React, too:
 
@@ -69,12 +69,12 @@ const App = () => {
 }
 ```
 
-The `div.children` will end up `["first", "second", "third"]`!.
+The `div.children` will end up `["first", "second", "third"]`!
 
-This is maybe for performance reasons. React want you to keep arrays their original shapes to make `key` prop work better.
+This is maybe for performance reasons. React want you to keep arrays their original shapes to make `key` prop work better. 
 
 However, it creates a complex type system and some unintuitive codes internally, because the nested arrays are passed around and eventually flattened. I want to solve this.
 
-So, I posted an [issue](https://github.com/evanw/esbuild/issues/2245) in ESbuild. The author was very nice, understanding the situation very quickly and changing the behavior of ESBuild immediately.
+So, I created an issue from [ESbuild](https://github.com/evanw/esbuild). The author was very nice, understanding the situation very quickly and changing the behavior of ESBuild immediately.
 
 For more detail, you can take a look of my [issue](https://github.com/evanw/esbuild/issues/2245).
