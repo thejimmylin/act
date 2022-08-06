@@ -1,6 +1,6 @@
 # act
 
-My tiny React for fun purposes.
+My tiny React, for fun purposes.
 
 # Overview
 
