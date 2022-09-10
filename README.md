@@ -4,12 +4,12 @@ My tiny React for fun.
 
 # Overview
 
-All source codes live in [local_modules/act/index.ts](https://github.com/j3ygh/act/tree/main/local_modules/act/index.ts) now.
+All source codes live in [local_modules/act/index.ts](https://github.com/thejimmylin/act/tree/main/local_modules/act/index.ts) now.
 
 # Installation & Run
 
 ```bash
-git clone https://github.com/j3ygh/act
+git clone https://github.com/thejimmylin/act
 cd act
 npm ci
 npm run dev
